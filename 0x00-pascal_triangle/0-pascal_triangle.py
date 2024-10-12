@@ -1,15 +1,23 @@
 #!/usr/bin/python3
+""" The Pascal Triangle Project"""
+
 def pascal_triangle(n):
+    """ Return a list of lists representing Pascal's Triangle"""
     if n <= 0:
         return []
 
-    triangle = [[1]]
+    p_triangle = [0] * n
 
-    for i in range(1, n):
-        row = [1]
-        for j in range(1, i):
-            row.append(triangle[i-1][j-1] + triangle[i-1][j])
-        row.append(1)
-        triangle.append(row)
-
-    return triangle
+    for a in range(n):
+        # Define rows and initialize the first and last elements as 1
+        current_row = [0] * (a + 1)
+        current_row[0] = 1
+        current_row[-1] = 1
+        
+        # Fill the internal elements of the row if there are any
+        for b in range(1, a):
+            current_row[b] = p_triangle[a - 1][b - 1] + p_triangle[a - 1][b]
+                
+        p_triangle[a] = current_row
+        
+    return p_triangle
