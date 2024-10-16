@@ -1,63 +1,59 @@
-#!/usr/bin/env python3
-"""
-This module contains a function to calculate
-the minimum number of operations required to reach
-exactly n 'H' characters in a file,
-using only two operations: copy-all and paste.
-"""
+#!/usr/bin/python3
+'''Minimum Operations python3 challenge'''
 
 
 def minOperations(n):
-    """
-    Compute the minimum number of operations needed to reach exactly `n` 'H'
-    characters using only copy-all and paste operations.
+    '''calculates the fewest number of
+    operations needed to result in exactly n H
+    characters in this file.
     Returns:
-        int : The minimum number of operations, or 0 if it's not possible.
-    """
-    pasted_chars = 1  # Number of 'H' characters currently in the file.
-    clipboard = 0  # Clipboard stores the copied number of 'H' characters
-    counter = 0  # Counter to track the total number of operations.
+        Integer : if n is impossible to achieve, return 0
+    '''
+    pasted_chars = 1  # how many chars in the file
+    clipboard = 0  # how many H's copied
+    counter = 0  # operations counter
 
     while pasted_chars < n:
-        # If the clipboard is empty, did not copy any operation.
+        # if did not copy anything yet
         if clipboard == 0:
-            # Copy-all 'H' to clipboard
+            # copyall
             clipboard = pasted_chars
-            # Increment the counter for the copy operation
+            # increment operations counter
             counter += 1
 
-        # If only one 'H' character is in the file.
+        # if haven't pasted anything yet
         if pasted_chars == 1:
-            # Paste from the clipboard
+            # paste
             pasted_chars += clipboard
-            # Increment the counter for the paste operation
+            # increment operations counter
             counter += 1
-            # Continue to the next iteration of the loop
+            # continue to next loop
             continue
 
-        # Calculate remaining chars to be pasted.
-        remaining = n - pasted_chars
-
-        # If the remaining characters are less than the clipboard content,
-        # return 0 as it's not possible to reach n.
+        remaining = n - pasted_chars  # remaining chars to Paste
+        # check if impossible by checking if clipboard
+        # has more than needed to reach the number desired
+        # which also means num of chars in file is equal
+        # or more than in the clipboard.
+        # in both situations it's impossible to achieve n of chars
         if remaining < clipboard:
             return 0
 
-        # If remaining characters are not divisible by pasted_chars
+        # if can't be devided
         if remaining % pasted_chars != 0:
-            # Paste current clipboard content
+            # paste current clipboard
             pasted_chars += clipboard
-            # Increment the counter for the paste operation
+            # increment operations counter
             counter += 1
         else:
-            # Copy all the current number of 'H' characters
+            # copyall
             clipboard = pasted_chars
-            # Paste the clipboard content
+            # paste
             pasted_chars += clipboard
-            # Increment for both copy and paste operations
+            # increment operations counter
             counter += 2
 
-    # If the target number of characters is reached, return the counter
+    # if got the desired result
     if pasted_chars == n:
         return counter
     else:
