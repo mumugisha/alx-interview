@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
-"""
-Ccalculate the minimum number of operations
-required to  reach exactly n 'H' characters in a file, 
+'''Calculate the minimum number of operations
+required to reach exactly n 'H' characters in a file,
 using only two operations: copy-all and paste.
-"""
+'''
 
 
 def minOperations(n):
-    """
-    Compute the minimum number of operations needed to reach exactly `n` 'H'
-    characters using only copy-all and paste operations.
-
+    '''Calculates the fewest number of
+    operations needed to result in exactly n H
+    characters in this file.
+    
     Returns:
-        Integer: If n is not possible to reach, return 0
-    """
+        Integer: if n is impossible to achieve, return 0
+    '''
     pasted_chars = 1  # Number of 'H' characters currently in the file.
     clipboard = 0  # Clipboard stores the copied number of 'H' characters.
     counter = 0  # Counter to track the total number of operations.
@@ -35,8 +34,7 @@ def minOperations(n):
             # Continue to the next iteration of the loop
             continue
 
-        
-        remaining = n - pasted_chars # Calculate remaining chars to be pasted.
+        remaining = n - pasted_chars  # Calculate remaining chars to be pasted.
         # If the remaining characters are less than the clipboard content,
         # return 0 as it's not possible to reach n.
         if remaining < clipboard:
@@ -58,8 +56,6 @@ def minOperations(n):
 
     # If the target number of characters is reached
     if pasted_chars == n:
-
         return counter
     else:
-
         return 0
