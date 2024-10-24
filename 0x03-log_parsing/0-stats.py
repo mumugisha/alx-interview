@@ -1,42 +1,44 @@
 #!/usr/bin/python3
-"""
-Script that reads stdin line by line and computes metrics.
-"""
-
-
+"""Log Parser"""
 import sys
 
-code_count = {
-    '200': 0, '301': 0, '400': 0, '401': 0,
-    '403': 0, '404': 0, '405': 0, '500': 0
-}
-file_total_size = 0
-counter = 0
 
-try:
-    for line in sys.stdin:
-        status_list = line.split(" ")
+if __name__ == '__main__':
+    file_size = [0]
+    status_codes = {200: 0, 301: 0, 400: 0, 401: 0,
+                    403: 0, 404: 0, 405: 0, 500: 0}
 
-        if len(status_list) > 4:
-            code = status_list[-2]
-            size = int(status_list[-1])
+    def print_stats():
+        """ Print statistics """
+        print('File size: {}'.format(file_size[0]))
+        for key in sorted(status_codes.keys()):
+            if status_codes[key]:
+                print('{}: {}'.format(key, status_codes[key]))
 
-            if code in code_count:
-                code_count[code] += 1
-                file_total_size += size
+    def parse_line(line):
+        """ Checks the line for matches """
+        try:
+            line = line[:-1]
+            word = line.split(' ')
+            # File size is last parameter on stdout
+            file_size[0] += int(word[-1])
+            # Status code comes before file size
+            status_code = int(word[-2])
+            # Move through dictionary of status codes
+            if status_code in status_codes:
+                status_codes[status_code] += 1
+        except BaseException:
+            pass
 
-            counter += 1
-            if counter == 10:
-                counter = 0
-                print("File size: {}".format(file_total_size))
-                for key, value in sorted(code_count.items()):
-                    if value != 0:
-                        print("{}: {}".format(key, value))
-except Exception:
-    pass
-
-finally:
-    print("File size: {}".format(file_total_size))
-    for key, value in sorted(code_count.items()):
-        if value != 0:
-            print("{}: {}".format(key, value))
+    linenum = 1
+    try:
+        for line in sys.stdin:
+            parse_line(line)
+            """ print after every 10 lines """
+            if linenum % 10 == 0:
+                print_stats()
+            linenum += 1
+    except KeyboardInterrupt:
+        print_stats()
+        raise
+    print_stats()
