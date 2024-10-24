@@ -2,10 +2,13 @@
 """
 Script that reads stdin line by line and computes metrics.
 """
+
 import sys
 
-code_count = {'200': 0, '301': 0, '400': 0, '401': 0,
-              '403': 0, '404': 0, '405': 0, '500': 0}
+code_count = {
+    '200': 0, '301': 0, '400': 0, '401': 0,
+    '403': 0, '404': 0, '405': 0, '500': 0
+}
 file_total_size = 0
 counter = 0
 
@@ -17,7 +20,7 @@ try:
             code = status_list[-2]
             size = int(status_list[-1])
 
-            if code in code_count.keys():
+            if code in code_count:
                 code_count[code] += 1
                 file_total_size += size
 
