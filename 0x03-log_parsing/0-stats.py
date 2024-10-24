@@ -1,43 +1,49 @@
 #!/usr/bin/python3
-"""Log Parser"""
+"""
+Script that reads stdin line by line and computes metrics.
+"""
 import sys
+
+file_total_size = [0]
+code_count = {
+    '200': 0, '301': 0, '400': 0, '401': 0,
+    '403': 0, '404': 0, '405': 0, '500': 0
+}
+counter = 0
+
+
+def print_stats():
+    """Print statistics."""
+    print("File size: {}".format(file_total_size[0]))
+    for key, value in sorted(code_count.items()):
+        if value != 0:
+            print("{}: {}".format(key, value))
+
+
+def parse_line(line):
+    """
+    Check if the line matches the expected format.
+    """
+    try:
+        line = line[:-1]
+        status_list = line.split(" ")
+        file_total_size[0] += int(status_list[-1])
+        status_code = status_list[-2]
+        if status_code in code_count:
+            code_count[status_code] += 1
+    except BaseException:
+        pass
 
 
 if __name__ == '__main__':
-    file_size = [0]
-    status_codes = {200: 0, 301: 0, 400: 0, 401: 0,
-                    403: 0, 404: 0, 405: 0, 500: 0}
-
-    def print_stats():
-        """ Print statistics """
-        print('File size: {}'.format(file_size[0]))
-        for key in sorted(status_codes.keys()):
-            if status_codes[key]:
-                print('{}: {}'.format(key, status_codes[key]))
-
-    def parse_line(line):
-        """ Checks the line for matches """
-        try:
-            line = line[:-1]
-            word = line.split(' ')
-            # File size is last parameter on stdout
-            file_size[0] += int(word[-1])
-            # Status code comes before file size
-            status_code = int(word[-2])
-            # Move through dictionary of status codes
-            if status_code in status_codes:
-                status_codes[status_code] += 1
-        except BaseException:
-            pass
-
-    linenum = 1
+    listnumber = 1
     try:
         for line in sys.stdin:
             parse_line(line)
-            """ print after every 10 lines """
-            if linenum % 10 == 0:
+            """Print after every 10 lines"""
+            if listnumber % 10 == 0:
                 print_stats()
-            linenum += 1
+            listnumber += 1
     except KeyboardInterrupt:
         print_stats()
         raise
