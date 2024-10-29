@@ -3,6 +3,7 @@
 Determines if a given data set represents a valid UTF-8 encoding.
 """
 
+
 def validUTF8(data):
     """
     Validate if the data set represents a valid UTF-8 encoding.
