@@ -6,12 +6,14 @@ the N queens problem.
 
 import sys
 
+
 def is_safe(n_queens, row, column):
     """Check if a queen can be placed at the current row, column."""
     for r, c in n_queens:
         if c == column or abs(c - column) == abs(r - row):
             return False
     return True
+
 
 def solve_nqueens(n, row=0, n_queens=[], solutions=[]):
     """Recursive function to solve the N-Queens problem."""
@@ -24,6 +26,7 @@ def solve_nqueens(n, row=0, n_queens=[], solutions=[]):
             n_queens.append((row, column))
             solve_nqueens(n, row + 1, n_queens, solutions)
             n_queens.pop()  # backtrack
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
