@@ -14,18 +14,19 @@ def makeChange(coins, total):
     """
     if total <= 0:
         return 0
-    if not coins:
+
+    run_time = [sys.maxsize for a in range(total + 1)]
+    run_time[0] = 0
+    max_coins = len(coins)
+
+    for a in range(1, total + 1):
+        for b in range(max_coins):
+            if coins[b] <= a:
+                subres = run_time[a - coins[b]]
+                if subres != sys.maxsize and subres + 1 < run_time[a]:
+                    run_time[a] = subres + 1
+
+    if run_time[total] == sys.maxsize:
         return -1
 
-    dp = [sys.maxsize for current_total in range(total + 1)]
-    dp[0] = 0
-    num_coins = len(coins)
-
-    for current_total in range(1, total + 1):
-        for coin_index in range(num_coins):
-            if coins[coin_index] <= current_total:
-                sub_res = dp[current_total - coins[coin_index]]
-                if sub_res != sys.maxsize and sub_res + 1 < dp[current_total]:
-                    dp[current_total] = sub_res + 1
-
-    return -1 if dp[total] == sys.maxsize else dp[total]
+    return run_time[total]
