@@ -2,58 +2,80 @@
 """Prime Game Challenge"""
 
 
-def is_winner(x, nums):
-    """Find the winner of the prime game."""
+def isWinner(x, nums):
+    """Determines the winner of the prime game.
+
+    Args:
+        x (int): Number of rounds.
+        nums (list): List of integers representing the upper bounds of each round.
+
+    Returns:
+        str: The name of the winner ('Maria' or 'Ben'), or None if there's no winner.
+    """
+    if not nums or x < 1:
+        return None
+
     counting_winner = {'Maria': 0, 'Ben': 0}
 
-    for round_number in range(x):
-        round_winner = is_round_winner(nums[round_number])
-        if round_winner is not None:
+    for round_num in nums[:x]:
+        round_winner = isRoundWinner(round_num)
+        if round_winner:
             counting_winner[round_winner] += 1
 
     if counting_winner['Maria'] > counting_winner['Ben']:
         return 'Maria'
     elif counting_winner['Ben'] > counting_winner['Maria']:
         return 'Ben'
-    return None
+    else:
+        return None
 
 
-def is_round_winner(n):
-    """Find the round winner."""
-    number_list = list(range(1, n + 1))
+def isRoundWinner(n):
+    """Determines the winner for a single round.
+
+    Args:
+        n (int): The upper bound of the range for the round.
+
+    Returns:
+        str: The name of the round winner ('Maria' or 'Ben'), or None if undecided.
+    """
+    if n < 1:
+        return None
+
+    numbers = list(range(1, n + 1))
     players = ['Maria', 'Ben']
+    turn = 0  # Maria starts
 
-    for turn in range(n):
-        current_player = players[turn % 2]
-        prime = -1
-        selected_indices = []
+    while numbers:
+        prime = None
+        for num in numbers:
+            if isPrime(num):
+                prime = num
+                break
 
-        for index, number in enumerate(number_list):
-            if prime != -1 and number % prime == 0:
-                selected_indices.append(index)
-            elif prime == -1 and is_prime(number):
-                selected_indices.append(index)
-                prime = number
+        if prime is None:
+            # Current player loses
+            return players[(turn + 1) % 2]
 
-        if prime == -1:  # If no valid move, current player loses
-            return players[1] if current_player == players[0] else players[0]
-
-        # Remove selected numbers from the list
-        for index in sorted(selected_indices, reverse=True):
-            del number_list[index]
+        # Remove the prime and its multiples
+        numbers = [num for num in numbers if num % prime != 0]
+        turn = (turn + 1) % 2  # Switch player
 
     return None
 
 
-def is_prime(n):
-    """Check if a number is prime."""
-    if n <= 1:
+def isPrime(num):
+    """Checks if a number is a prime.
+
+    Args:
+        num (int): The number to check.
+
+    Returns:
+        bool: True if the number is prime, False otherwise.
+    """
+    if num < 2:
         return False
-    if n == 2:
-        return True
-    if n % 2 == 0:
-        return False
-    for divisor in range(3, int(n**0.5) + 1, 2):
-        if n % divisor == 0:
+    for i in range(2, int(num ** 0.5) + 1):
+        if num % i == 0:
             return False
     return True
