@@ -7,10 +7,10 @@ def isWinner(x, nums):
 
     Args:
         x (int): Number of rounds.
-        nums (list): List of integers representing the upper bounds of each round.
+        nums (list): List of integers for each round.
 
     Returns:
-        str: The name of the winner ('Maria' or 'Ben'), or None if there's no winner.
+        str: Name of the winner ('Maria' or 'Ben'), or None if no winner.
     """
     if not nums or x < 1:
         return None
@@ -26,8 +26,7 @@ def isWinner(x, nums):
         return 'Maria'
     elif counting_winner['Ben'] > counting_winner['Maria']:
         return 'Ben'
-    else:
-        return None
+    return None
 
 
 def isRoundWinner(n):
@@ -37,7 +36,7 @@ def isRoundWinner(n):
         n (int): The upper bound of the range for the round.
 
     Returns:
-        str: The name of the round winner ('Maria' or 'Ben'), or None if undecided.
+        str: Name of the round winner ('Maria' or 'Ben'), or None.
     """
     if n < 1:
         return None
@@ -54,10 +53,8 @@ def isRoundWinner(n):
                 break
 
         if prime is None:
-            # Current player loses
             return players[(turn + 1) % 2]
 
-        # Remove the prime and its multiples
         numbers = [num for num in numbers if num % prime != 0]
         turn = (turn + 1) % 2  # Switch player
 
@@ -65,7 +62,7 @@ def isRoundWinner(n):
 
 
 def isPrime(num):
-    """Checks if a number is a prime.
+    """Checks if a number is prime.
 
     Args:
         num (int): The number to check.
