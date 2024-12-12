@@ -52,7 +52,7 @@ def isRoundWinner(n):
             return players[(turn + 1) % 2]
 
         numbers = [num for num in numbers if num % prime != 0]
-        turn = (turn + 1) % 2
+        turn = (turn + 1) % 2  # Switch player
 
     return None
 
