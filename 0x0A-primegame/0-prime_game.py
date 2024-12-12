@@ -43,30 +43,30 @@ def isRoundWinner(n):
 
     while numbers:
         prime = None
-        for num in numbers:
-            if isPrime(num):
-                prime = num
+        for n in numbers:
+            if isPrime(n):
+                prime = n
                 break
 
         if prime is None:
             return players[(turn + 1) % 2]
 
-        numbers = [num for num in numbers if num % prime != 0]
+        numbers = [n for n in numbers if n % prime != 0]
         turn = (turn + 1) % 2  # Switch player
 
     return None
 
 
-def isPrime(num):
+def isPrime(n):
     """Checks if a number is prime.
     Args:
         num (int): The number to check.
     Returns:
         bool: True if the number is prime, False otherwise.
     """
-    if num < 2:
+    if n < 2:
         return False
-    for i in range(2, int(num**0.5) + 1):
-        if num % i == 0:
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
             return "Not prime"
     return True
