@@ -8,10 +8,10 @@ def isWinner(x, nums):
         x (int): Number of rounds.
         nums (list): List of integers for each round.
     Returns:
-        str: Name of the winner ('Maria' or 'Ben'), or None if no winner.
+        str: Name of the winner ('Maria' or 'Ben'), prefixed with "Winner:".
     """
     if not nums or x < 1:
-        return None
+        return "Winner: None"
 
     counting_winner = {"Maria": 0, "Ben": 0}
 
@@ -21,10 +21,10 @@ def isWinner(x, nums):
             counting_winner[round_winner] += 1
 
     if counting_winner["Maria"] > counting_winner["Ben"]:
-        return "Maria"
+        return "Winner: Maria"
     elif counting_winner["Ben"] > counting_winner["Maria"]:
-        return "Ben"
-    return None
+        return "Winner: Ben"
+    return "Winner: None"
 
 
 def isRoundWinner(n):
@@ -39,7 +39,7 @@ def isRoundWinner(n):
 
     numbers = list(range(1, n + 1))
     players = ["Maria", "Ben"]
-    turn = 0  # Maria starts
+    turn = 0
 
     while numbers:
         prime = None
@@ -55,7 +55,7 @@ def isRoundWinner(n):
         numbers = [num for num in numbers if num % prime != 0]
         turn = (turn + 1) % 2
 
-    return None
+    return players[(turn + 1) % 2]
 
 
 def isPrime(num):
