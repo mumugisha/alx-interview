@@ -51,8 +51,9 @@ def isRoundWinner(n):
         if prime is None:
             return players[(turn + 1) % 2]
 
+        # Remove multiples of the prime
         numbers = [num for num in numbers if num % prime != 0]
-        turn = (turn + 1) % 2  # Switch player
+        turn = (turn + 1) % 2
 
     return None
 
@@ -66,7 +67,7 @@ def isPrime(num):
     """
     if num < 2:
         return False
-    for i in range(2, int(num**(1/2))+1):
+    for i in range(2, int(num**(0.5)) + 1):
         if num % i == 0:
             return False
     return True
